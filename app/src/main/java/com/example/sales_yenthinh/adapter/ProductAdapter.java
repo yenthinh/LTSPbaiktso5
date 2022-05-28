@@ -12,7 +12,7 @@ import com.example.sales_yenthinh.R;
 import com.example.sales_yenthinh.models.Product;
 import com.example.sales_yenthinh.models.SaleManager;
 
-public class ProductAdapter  extends ArrayAdapter {
+public class ProductAdapter extends ArrayAdapter {
     Activity activity;//activity chứa listview
     public ProductAdapter(Activity activity, ArrayList products) {
         super(activity, 0, products);
@@ -27,10 +27,11 @@ public class ProductAdapter  extends ArrayAdapter {
         if (convertView == null)
         {
             LayoutInflater inflater = activity.getLayoutInflater();
-            convertView = inflater.inflate(R.layout.listitem_product,null);
+            convertView = inflater.inflate(R.layout.item_product,null);
         }
         //lấy các textview trong mỗi view
-        TextView tvProductName = (TextView)convertView.findViewById(R.id.tvProductName);
+        TextView tvProductName = (TextView)convertView
+                .findViewById(R.id.tvProductName);
         TextView tvUnit = (TextView)convertView.findViewById(R.id.tvUnit);
         TextView tvPrice = (TextView)convertView.findViewById(R.id.tvPrice);
         //hiển thị dư liệu lên từng item của listview ở vị trí position
@@ -40,5 +41,4 @@ public class ProductAdapter  extends ArrayAdapter {
         String s = (new DecimalFormat("#,###.##")).format(p.getPrice());
         tvPrice.setText(s);
         return convertView;//trả về 1 view khi đã thiết đặt xong
-    }
-}
+    }}

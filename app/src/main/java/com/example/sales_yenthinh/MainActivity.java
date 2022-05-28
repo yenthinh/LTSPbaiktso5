@@ -6,10 +6,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 import java.util.AbstractList;
@@ -58,30 +61,15 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-       int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.btnAdd) {
-            openActivity1();
+        switch (item.getItemId()) {
+            case R.id.btnAdd:
+                //Toast.makeText(this, "Item 2 selected", Toast.LENGTH_SHORT).show();
+                //Them san pham
+                openMyCustom();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
-            //Toast.makeText(this, "Bạn vừa bấm vào dấu cộng", Toast.LENGTH_SHORT).show();
-            //đến màng hình ProductActivity
-            //Intent intent = new Intent(this, ProductActivity.class);
-            //tham số -1 tức ta không truyền 1 position của item nào cả
-            //ta mở ProductActivity để thêm sp mới
-            //intent.putExtra(ProductActivity.EXTRA_POSITION, -1);
-            //startActivity(intent);
-            //return true;
-        //}
-
-        return super.onOptionsItemSelected(item);
-    }
-    private void openActivity1() {
-        intent = new Intent(this, MainAcitivity1.class);
-        startActivity(intent);
     }
     private class ItemLongClickRemove implements AdapterView.OnItemLongClickListener {
         @Override
@@ -108,4 +96,55 @@ public class MainActivity extends AppCompatActivity {
             return true;
         }
     }
-}
+    public void openMyCustom() {
+
+        // khởi tạo AlertDialog từ đối tượng Builder. tham số truyền vào ở đây là context.
+        //final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        final AlertDialog builder = new AlertDialog.Builder(this).create();
+
+        // khoi tao doi tuong View tu file mydialog.
+        final View alert = LayoutInflater.from(this).inflate(R.layout.add_item, null);
+
+        // set layout cho alert dialog
+        builder.setView(alert);
+
+        final EditText txtProductName;
+        final EditText txtUnit;
+        final EditText txtPrice;
+        Button btnThem;
+        Button btnHuy;
+
+        // tham chieu cac doi tuong co tren giao dien dialog vua duoc set
+        txtProductName = alert.findViewById(R.id.txtProductName);
+        txtUnit = alert.findViewById(R.id.txtUnit);
+        txtPrice = alert.findViewById(R.id.txtPrice);
+        btnThem = alert.findViewById(R.id.btnThem);
+        btnHuy = alert.findViewById(R.id.btnHuy);
+
+        // tạo dialog và hiển thị
+        builder.show();
+
+        // bat su kien click vao nut
+        btnThem.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Product product = new Product();
+                product.setProductName(txtProductName.getText().toString());
+                product.setUnit(txtUnit.getText().toString());
+                String s = txtPrice.getText().toString();
+                s = s.replace(",", "");
+                double price = Double.parseDouble(s);
+                product.setPrice(price);
+                adapter.add(product);
+                adapter.notifyDataSetChanged();
+                builder.dismiss();
+            }
+        });
+
+        btnHuy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                builder.dismiss();
+            }
+        });
+}}
